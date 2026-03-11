@@ -9,7 +9,8 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
+  const { data: profileData } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
+  const profile = profileData as any;
   const { data: sessions } = await supabase.from('study_sessions').select('*')
     .eq('user_id', user!.id).order('created_at', { ascending: false }).limit(4);
   const { data: reviews } = await supabase.from('card_reviews').select('*')
