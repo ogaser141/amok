@@ -45,7 +45,6 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
 
   const card = cards[idx];
   const progress = cards.length > 0 ? (idx / cards.length) * 100 : 0;
-  const li = LEVEL_INFO[selectedLevel];
 
   function getMode(i: number): ExMode {
     return (['flashcard', 'flashcard', 'multipleChoice', 'flashcard', 'fillBlank'] as ExMode[])[i % 5];
@@ -114,7 +113,9 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
       const last = profile?.last_study_date ? new Date(profile.last_study_date).toDateString() : null;
       const yest = new Date(Date.now() - 86400000).toDateString();
       const streak = last === today ? profile?.streak_days || 0 : last === yest ? (profile?.streak_days || 0) + 1 : 1;
-      await (supabase.from('profiles') as any).update({ streak_days: streak, last_study_date: new Date().toISOString() }).eq('id', userId);
+      await (supabase.from('profiles') as any)
+        .update({ streak_days: streak, last_study_date: new Date().toISOString() })
+        .eq('id', userId);
       setScreen('complete');
     } else {
       const next = idx + 1;
@@ -138,15 +139,21 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
     if (ok) toast.success('¡Correcto! 🎉');
   }
 
-  // ── Level Select ─────────────────────────────────────────────────
+  // ── Level Select ──────────────────────────────────────────
   if (screen === 'levelSelect') return (
-    <div className="min-h-screen">
-      <div className="max-w-2xl mx-auto px-4 py-8 animate-slide-up">
-        <Link href="/dashboard" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-500 hover:text-emerald-300 transition-colors mb-8">
+    <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
+      <div className="max-w-2xl mx-auto px-4 py-8">
+        <Link href="/dashboard"
+          className="inline-flex items-center gap-2 text-sm font-semibold transition-colors mb-8 block"
+          style={{ color: 'var(--green)' }}>
           ← Volver al inicio
         </Link>
-        <h1 className="text-2xl font-black text-emerald-100 mb-1">¿Qué quieres estudiar?</h1>
-        <p className="text-emerald-600 text-sm mb-8">Elige un nivel para comenzar tu sesión de hoy</p>
+        <h1 className="text-2xl font-black mb-1" style={{ color: 'var(--text)' }}>
+          ¿Qué quieres estudiar?
+        </h1>
+        <p className="text-sm mb-8" style={{ color: 'var(--text2)' }}>
+          Elige un nivel para comenzar tu sesión de hoy
+        </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {Object.values(LEVEL_INFO).map(level => {
@@ -159,26 +166,30 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
               <button key={level.id}
                 onClick={() => unlocked && startSession(level.id)}
                 disabled={!unlocked}
-                className={`text-left p-5 rounded-2xl border transition-all ${
-                  unlocked
-                    ? `${level.bg} ${level.border} hover:scale-[1.02] cursor-pointer`
-                    : 'bg-emerald-950/30 border-emerald-900/40 opacity-40 cursor-not-allowed'
-                }`}>
+                className="text-left p-5 rounded-2xl border transition-all"
+                style={{
+                  background: unlocked ? 'var(--surface)' : 'var(--surface2)',
+                  borderColor: unlocked ? 'var(--border2)' : 'var(--border)',
+                  opacity: unlocked ? 1 : 0.5,
+                  cursor: unlocked ? 'pointer' : 'not-allowed',
+                  boxShadow: unlocked ? 'var(--shadow)' : 'none',
+                }}>
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-2xl">{level.emoji}</span>
                   <div className="flex items-center gap-2">
                     {!unlocked && <span className="text-sm">🔒</span>}
                     {unlocked && pending > 0 && (
-                      <span className="text-[11px] font-bold bg-amber-400/15 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full">
+                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full border"
+                        style={{ color: 'var(--warning)', background: 'rgba(251,191,36,0.08)', borderColor: 'rgba(251,191,36,0.2)' }}>
                         {pending} pendientes
                       </span>
                     )}
                   </div>
                 </div>
-                <div className={`text-2xl font-black ${level.color}`}>{level.id}</div>
-                <div className="font-bold text-emerald-200 mt-0.5">{level.name}</div>
-                <div className="text-xs text-emerald-600 mt-1">{level.description}</div>
-                <div className="text-xs text-emerald-700 mt-2 font-medium">
+                <div className="text-2xl font-black" style={{ color: 'var(--green)' }}>{level.id}</div>
+                <div className="font-bold mt-0.5" style={{ color: 'var(--text)' }}>{level.name}</div>
+                <div className="text-xs mt-1" style={{ color: 'var(--text2)' }}>{level.description}</div>
+                <div className="text-xs mt-2 font-medium" style={{ color: 'var(--text3)' }}>
                   {level.totalCards} tarjetas · {!unlocked ? `${level.minXP} XP necesarios` : 'Disponible ✓'}
                 </div>
               </button>
@@ -189,34 +200,37 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
     </div>
   );
 
-  // ── Complete ─────────────────────────────────────────────────────
+  // ── Complete ──────────────────────────────────────────────
   if (screen === 'complete') {
     const acc = Math.round((sessionCorrect / cards.length) * 100);
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="max-w-sm w-full mx-auto px-4 text-center animate-pop">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
+        <div className="max-w-sm w-full mx-auto px-4 text-center">
           <div className="text-6xl mb-4">{acc >= 80 ? '🏆' : acc >= 60 ? '🎯' : '📚'}</div>
-          <h2 className="text-2xl font-black text-emerald-100 mb-2">¡Sesión completada!</h2>
-          <p className="text-emerald-500 mb-8">Excelente trabajo — tu memoria se está fortaleciendo</p>
+          <h2 className="text-2xl font-black mb-2" style={{ color: 'var(--text)' }}>¡Sesión completada!</h2>
+          <p className="mb-8" style={{ color: 'var(--text2)' }}>Excelente trabajo — tu memoria se está fortaleciendo</p>
           <div className="grid grid-cols-3 gap-3 mb-8">
             {[
-              { v:`+${sessionXP}`, label:'XP ganados', color:'text-amber-300' },
-              { v:`${acc}%`,        label:'Precisión',  color:'text-emerald-300' },
-              { v:`${cards.length}`,label:'Tarjetas',   color:'text-emerald-400' },
+              { v: `+${sessionXP}`, label: 'XP ganados',  color: 'var(--warning)' },
+              { v: `${acc}%`,        label: 'Precisión',   color: 'var(--green)' },
+              { v: `${cards.length}`,label: 'Tarjetas',    color: 'var(--green-bright)' },
             ].map(s => (
-              <div key={s.label} className="bg-emerald-950/60 border border-emerald-800/50 rounded-2xl p-4">
-                <div className={`text-xl font-black ${s.color}`}>{s.v}</div>
-                <div className="text-[11px] text-emerald-600 mt-1">{s.label}</div>
+              <div key={s.label} className="rounded-2xl p-4 border"
+                style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+                <div className="text-xl font-black" style={{ color: s.color }}>{s.v}</div>
+                <div className="text-[11px] mt-1" style={{ color: 'var(--text3)' }}>{s.label}</div>
               </div>
             ))}
           </div>
           <div className="flex flex-col gap-3">
             <button onClick={() => startSession(selectedLevel)}
-              className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl transition-all btn-glow">
+              className="w-full py-3.5 text-white font-black rounded-xl transition-all btn-glow"
+              style={{ background: 'var(--green-dark)' }}>
               🔄 Estudiar de nuevo
             </button>
             <Link href="/dashboard"
-              className="w-full py-3.5 bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 font-semibold rounded-xl transition-all text-center hover:border-emerald-600/60"
+              className="w-full py-3.5 font-semibold rounded-xl transition-all text-center border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text2)' }}
               onClick={() => router.refresh()}>
               Volver al inicio
             </Link>
@@ -226,152 +240,180 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
     );
   }
 
-  // ── Session ───────────────────────────────────────────────────────
+  // ── Session ───────────────────────────────────────────────
   if (!card) return null;
-
-  const modeLabel = { flashcard:'Tarjeta', fillBlank:'Escribe en inglés', multipleChoice:'Opción múltiple' }[mode];
+  const modeLabel = { flashcard: 'Tarjeta', fillBlank: 'Escribe en inglés', multipleChoice: 'Opción múltiple' }[mode];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
       <div className="max-w-lg mx-auto px-4 py-6">
+
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
           <button onClick={() => setScreen('levelSelect')}
-            className="p-2 text-emerald-700 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-colors">
+            className="p-2 rounded-xl transition-colors"
+            style={{ color: 'var(--text3)', background: 'var(--surface)' }}>
             <X className="w-5 h-5" />
           </button>
-          <div className="flex-1 h-2.5 bg-emerald-950 rounded-full overflow-hidden border border-emerald-900">
+          <div className="flex-1 h-2.5 rounded-full overflow-hidden border"
+            style={{ background: 'var(--surface2)', borderColor: 'var(--border)' }}>
             <div className="h-full rounded-full transition-all duration-500"
               style={{
                 width: `${progress}%`,
-                background: 'linear-gradient(90deg, #059669, #34d399)',
-                boxShadow: '0 0 8px rgba(52,211,153,0.4)',
+                background: 'linear-gradient(90deg, var(--green-dark), var(--green-bright))',
+                boxShadow: '0 0 8px var(--green-glow)',
               }} />
           </div>
-          <span className="text-xs font-bold text-emerald-600 tabular-nums">{idx + 1}/{cards.length}</span>
+          <span className="text-xs font-bold tabular-nums" style={{ color: 'var(--text3)' }}>
+            {idx + 1}/{cards.length}
+          </span>
         </div>
 
         {/* Meta */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">{card.category}</span>
-            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-950/80 border border-emerald-900 px-2 py-0.5 rounded-full">{modeLabel}</span>
+            <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text3)' }}>
+              {card.category}
+            </span>
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border"
+              style={{ color: 'var(--text2)', background: 'var(--surface2)', borderColor: 'var(--border)' }}>
+              {modeLabel}
+            </span>
           </div>
-          <span className="text-xs font-bold text-amber-300 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-full">+{sessionXP} XP</span>
+          <span className="text-xs font-bold px-2.5 py-1 rounded-full border"
+            style={{ color: 'var(--warning)', background: 'rgba(251,191,36,0.08)', borderColor: 'rgba(251,191,36,0.2)' }}>
+            +{sessionXP} XP
+          </span>
         </div>
 
-        {/* ── FLASHCARD ───────────────────────────────────── */}
+        {/* ── FLASHCARD ─────────────────────────────────── */}
         {mode === 'flashcard' && (
-          <div className="animate-fade-in">
-            <p className="text-center text-xs text-emerald-600 mb-4 font-medium">
+          <div>
+            <p className="text-center text-xs mb-4 font-medium" style={{ color: 'var(--text3)' }}>
               {flipped ? '¿Qué tan bien la recordaste?' : 'Toca la tarjeta para ver la traducción'}
             </p>
             <div className="card-flip cursor-pointer select-none mb-6" onClick={() => !flipped && setFlipped(true)}>
               <div className={`card-flip-inner ${flipped ? 'flipped' : ''}`} style={{ minHeight: 220 }}>
                 {/* Front */}
-                <div className="card-front w-full h-full min-h-[220px] bg-emerald-950/60 border border-emerald-800/60 rounded-2xl p-8 flex flex-col items-center justify-center text-center"
-                  style={{ boxShadow: '0 0 30px rgba(16,185,129,0.05)' }}>
+                <div className="card-front w-full h-full min-h-[220px] rounded-2xl p-8 flex flex-col items-center justify-center text-center border"
+                  style={{ background: 'var(--surface)', borderColor: 'var(--border)', boxShadow: 'var(--shadow)' }}>
                   <button onClick={e => { e.stopPropagation(); speak(card.front); }}
-                    className="mb-4 p-2.5 text-emerald-700 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-colors">
+                    className="mb-4 p-2.5 rounded-xl transition-colors"
+                    style={{ color: 'var(--text3)', background: 'var(--surface2)' }}>
                     <Volume2 className="w-5 h-5" />
                   </button>
-                  <div className="text-3xl font-black text-emerald-100 mb-3">{card.front}</div>
-                  <div className="text-xs text-emerald-600 italic">"{card.example}"</div>
+                  <div className="text-3xl font-black mb-3" style={{ color: 'var(--text)' }}>{card.front}</div>
+                  <div className="text-xs italic" style={{ color: 'var(--text3)' }}>"{card.example}"</div>
                 </div>
                 {/* Back */}
-                <div className="card-back w-full h-full min-h-[220px] bg-emerald-900/20 border border-emerald-500/40 rounded-2xl p-8 flex flex-col items-center justify-center text-center"
-                  style={{ boxShadow: '0 0 30px rgba(52,211,153,0.08)' }}>
-                  <div className="text-xs font-bold text-emerald-500 uppercase tracking-wider mb-2">Traducción al español</div>
-                  <div className="text-3xl font-black text-emerald-300 mb-3">{card.back}</div>
-                  <div className="text-xs text-emerald-600 italic">"{card.example_es}"</div>
+                <div className="card-back w-full h-full min-h-[220px] rounded-2xl p-8 flex flex-col items-center justify-center text-center border"
+                  style={{ background: 'var(--surface2)', borderColor: 'var(--green)', boxShadow: 'var(--shadow)' }}>
+                  <div className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text3)' }}>
+                    Traducción al español
+                  </div>
+                  <div className="text-3xl font-black mb-3" style={{ color: 'var(--green)' }}>{card.back}</div>
+                  <div className="text-xs italic" style={{ color: 'var(--text2)' }}>"{card.example_es}"</div>
                 </div>
               </div>
             </div>
 
             {flipped ? (
               <div className="grid grid-cols-4 gap-2">
-                {(['again','hard','good','easy'] as Difficulty[]).map(d => (
-                  <button key={d} onClick={() => rate(d)} disabled={submitting}
-                    className={`py-3.5 rounded-xl font-bold text-xs transition-all disabled:opacity-50 ${
-                      d === 'again' ? 'bg-red-950/60 border border-red-800/60 text-red-400 hover:bg-red-900/40' :
-                      d === 'hard'  ? 'bg-orange-950/60 border border-orange-800/60 text-orange-400 hover:bg-orange-900/40' :
-                      d === 'good'  ? 'bg-blue-950/60 border border-blue-800/60 text-blue-400 hover:bg-blue-900/40' :
-                                      'bg-emerald-900/40 border border-emerald-600/50 text-emerald-300 hover:bg-emerald-800/40'
-                    }`}>
-                    {d === 'again' ? '😓 Otra vez' : d === 'hard' ? '😅 Difícil' : d === 'good' ? '😊 Bien' : '🥳 Fácil'}
+                {([
+                  { d: 'again', label: '😓 Otra vez', color: '#f87171', bg: 'rgba(248,113,113,0.06)', border: 'rgba(248,113,113,0.2)' },
+                  { d: 'hard',  label: '😅 Difícil',  color: '#fb923c', bg: 'rgba(251,146,60,0.06)',  border: 'rgba(251,146,60,0.2)' },
+                  { d: 'good',  label: '😊 Bien',     color: '#60a5fa', bg: 'rgba(96,165,250,0.06)',  border: 'rgba(96,165,250,0.2)' },
+                  { d: 'easy',  label: '🥳 Fácil',    color: 'var(--green)', bg: 'var(--green-glow)', border: 'rgba(16,185,129,0.25)' },
+                ] as const).map(({ d, label, color, bg, border }) => (
+                  <button key={d} onClick={() => rate(d as Difficulty)} disabled={submitting}
+                    className="py-3.5 rounded-xl font-bold text-xs transition-all disabled:opacity-50 border"
+                    style={{ color, background: bg, borderColor: border }}>
+                    {label}
                   </button>
                 ))}
               </div>
             ) : (
               <button onClick={() => setFlipped(true)}
-                className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl transition-all btn-glow">
+                className="w-full py-4 text-white font-black rounded-xl transition-all btn-glow"
+                style={{ background: 'var(--green-dark)' }}>
                 Ver traducción →
               </button>
             )}
           </div>
         )}
 
-        {/* ── FILL BLANK ──────────────────────────────────── */}
+        {/* ── FILL BLANK ────────────────────────────────── */}
         {mode === 'fillBlank' && (
-          <div className="animate-fade-in">
-            <div className="p-6 bg-emerald-950/60 border border-emerald-800/60 rounded-2xl text-center mb-6">
-              <div className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-2">¿Cómo se dice en inglés?</div>
-              <div className="text-2xl font-black text-emerald-100">{card.back}</div>
-              <div className="text-xs text-emerald-600 italic mt-2">Pista: "{card.example_es}"</div>
+          <div>
+            <div className="p-6 rounded-2xl text-center mb-6 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+              <div className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text3)' }}>
+                ¿Cómo se dice en inglés?
+              </div>
+              <div className="text-2xl font-black" style={{ color: 'var(--text)' }}>{card.back}</div>
+              <div className="text-xs italic mt-2" style={{ color: 'var(--text3)' }}>
+                Pista: "{card.example_es}"
+              </div>
             </div>
             <input type="text" value={input} onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && !checked && checkFill()}
               disabled={checked} placeholder="Escribe en inglés..." autoFocus
-              className={`w-full px-5 py-4 text-center text-lg font-black rounded-2xl border outline-none transition mb-4 ${
-                checked
-                  ? correct
-                    ? 'border-emerald-500 bg-emerald-900/30 text-emerald-300'
-                    : 'border-red-700/60 bg-red-950/30 text-red-300'
-                  : 'input-field text-center text-lg font-black'
-              }`} />
+              className="input-field text-center text-lg font-black mb-4"
+              style={checked ? {
+                borderColor: correct ? 'var(--green)' : 'var(--danger)',
+                background: correct ? 'var(--green-glow)' : 'rgba(248,113,113,0.06)',
+                color: correct ? 'var(--green)' : 'var(--danger)',
+              } : {}} />
             {checked && !correct && (
-              <p className="text-center text-sm text-emerald-600 mb-4">
-                Respuesta correcta: <span className="font-black text-emerald-300">{card.front}</span>
+              <p className="text-center text-sm mb-4" style={{ color: 'var(--text2)' }}>
+                Respuesta correcta: <span className="font-black" style={{ color: 'var(--green)' }}>{card.front}</span>
               </p>
             )}
             {!checked
               ? <button onClick={checkFill} disabled={!input.trim()}
-                  className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl transition-all btn-glow disabled:opacity-40 disabled:shadow-none">
+                  className="w-full py-4 text-white font-black rounded-xl transition-all btn-glow disabled:opacity-40 disabled:shadow-none"
+                  style={{ background: 'var(--green-dark)' }}>
                   Verificar
                 </button>
               : <button onClick={() => rate(correct ? 'good' : 'again')} disabled={submitting}
-                  className={`w-full py-4 font-black rounded-xl transition-all disabled:opacity-50 ${
-                    correct ? 'bg-emerald-600 hover:bg-emerald-500 text-white btn-glow' : 'bg-emerald-950/60 border border-emerald-800/60 text-emerald-400 hover:border-emerald-600/60'
-                  }`}>
-                  {correct ? '¡Continuar! →' : 'Continuar →'}
+                  className="w-full py-4 font-black rounded-xl transition-all disabled:opacity-50 border"
+                  style={correct
+                    ? { background: 'var(--green-dark)', color: 'white' }
+                    : { background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text2)' }}>
+                  Continuar →
                 </button>
             }
           </div>
         )}
 
-        {/* ── MULTIPLE CHOICE ─────────────────────────────── */}
+        {/* ── MULTIPLE CHOICE ───────────────────────────── */}
         {mode === 'multipleChoice' && (
-          <div className="animate-fade-in">
-            <div className="p-6 bg-emerald-950/60 border border-emerald-800/60 rounded-2xl text-center mb-6">
-              <div className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-3">Selecciona la traducción correcta</div>
+          <div>
+            <div className="p-6 rounded-2xl text-center mb-6 border"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+              <div className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: 'var(--text3)' }}>
+                Selecciona la traducción correcta
+              </div>
               <button onClick={() => speak(card.front)}
-                className="mb-3 p-2.5 text-emerald-700 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-colors mx-auto block">
+                className="mb-3 p-2.5 rounded-xl transition-colors mx-auto block"
+                style={{ color: 'var(--text3)', background: 'var(--surface2)' }}>
                 <Volume2 className="w-5 h-5" />
               </button>
-              <div className="text-2xl font-black text-emerald-100">{card.front}</div>
+              <div className="text-2xl font-black" style={{ color: 'var(--text)' }}>{card.front}</div>
             </div>
             <div className="grid grid-cols-2 gap-3 mb-4">
               {mcOptions.map(opt => {
                 const sel = mcSelected === opt;
                 const isRight = opt === card.back;
+                let borderColor = 'var(--border)';
+                let bg = 'var(--surface)';
+                let color = 'var(--text)';
+                if (checked && isRight)        { borderColor = 'var(--green)'; bg = 'var(--green-glow)'; color = 'var(--green)'; }
+                else if (checked && sel)       { borderColor = 'var(--danger)'; bg = 'rgba(248,113,113,0.06)'; color = 'var(--danger)'; }
                 return (
                   <button key={opt} onClick={() => selectMC(opt)} disabled={!!mcSelected}
-                    className={`p-4 rounded-xl border font-semibold text-sm transition-all ${
-                      checked && isRight  ? 'border-emerald-500 bg-emerald-900/40 text-emerald-300' :
-                      checked && sel && !isRight ? 'border-red-700/60 bg-red-950/30 text-red-300' :
-                      sel ? 'border-emerald-500/60 bg-emerald-900/20 text-emerald-300' :
-                      'border-emerald-900/60 bg-emerald-950/50 text-emerald-300 hover:border-emerald-700/60 hover:bg-emerald-900/30'
-                    }`}>
+                    className="p-4 rounded-xl font-semibold text-sm transition-all border"
+                    style={{ background: bg, borderColor, color }}>
                     {opt}
                   </button>
                 );
@@ -379,15 +421,16 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
             </div>
             {checked && (
               <button onClick={() => rate(correct ? 'good' : 'again')} disabled={submitting}
-                className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl transition-all btn-glow disabled:opacity-50">
+                className="w-full py-4 text-white font-black rounded-xl transition-all btn-glow disabled:opacity-50"
+                style={{ background: 'var(--green-dark)' }}>
                 Continuar →
               </button>
             )}
           </div>
         )}
 
-        <p className="text-center text-xs text-emerald-800 mt-6">
-          💡 La repetición espaciada programa cada tarjeta en el momento ideal para recordarla
+        <p className="text-center text-xs mt-6" style={{ color: 'var(--text3)' }}>
+          💡 La repetición espaciada programa cada tarjeta en el momento ideal
         </p>
       </div>
     </div>
