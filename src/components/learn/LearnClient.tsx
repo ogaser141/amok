@@ -114,7 +114,7 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
       const last = profile?.last_study_date ? new Date(profile.last_study_date).toDateString() : null;
       const yest = new Date(Date.now() - 86400000).toDateString();
       const streak = last === today ? profile?.streak_days || 0 : last === yest ? (profile?.streak_days || 0) + 1 : 1;
-      await supabase.from('profiles').update({ streak_days: streak, last_study_date: new Date().toISOString() }).eq('id', userId);
+      await (supabase.from('profiles') as any).update({ streak_days: streak, last_study_date: new Date().toISOString() }).eq('id', userId);
       setScreen('complete');
     } else {
       const next = idx + 1;
