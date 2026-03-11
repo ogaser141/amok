@@ -10,7 +10,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   let { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
 
   if (!profile) {
-    const { data: np } = await supabase.from('profiles').insert({
+    const insertData = {
       id: user.id,
       full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Estudiante',
       avatar_url: user.user_metadata?.avatar_url || null,
@@ -18,7 +18,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
       xp: 0,
       streak_days: 0,
       daily_goal_minutes: 10,
-    }).select().single();
+    };
+    const { data: np } = await supabase
+      .from('profiles')
+      .insert(insertData as any)
+      .select()
+      .single();
     profile = np;
   }
 
