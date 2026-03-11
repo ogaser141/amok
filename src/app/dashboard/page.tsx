@@ -11,10 +11,12 @@ export default async function DashboardPage() {
 
   const { data: profileData } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
   const profile = profileData as any;
-  const { data: sessions } = await supabase.from('study_sessions').select('*')
+  const { data: sessionsData } = await supabase.from('study_sessions').select('*')
     .eq('user_id', user!.id).order('created_at', { ascending: false }).limit(4);
-  const { data: reviews } = await supabase.from('card_reviews').select('*')
+  const sessions = sessionsData as any[];
+  const { data: reviewsData } = await supabase.from('card_reviews').select('*')
     .eq('user_id', user!.id).lte('next_review_at', new Date().toISOString());
+  const reviews = reviewsData as any[];
 
   const name = profile?.full_name?.split(' ')[0] || 'Estudiante';
   const currentLevel = (profile?.current_level as Level) || 'A1';
