@@ -11,8 +11,10 @@ export default async function LearnPage({ searchParams }: Props) {
   if (!user) redirect('/auth/login');
 
   const params = await searchParams;
-  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-  const { data: reviews } = await supabase.from('card_reviews').select('*').eq('user_id', user.id);
+  const { data: profileData } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+  const profile = profileData as any;
+  const { data: reviewsData } = await supabase.from('card_reviews').select('*').eq('user_id', user.id);
+  const reviews = reviewsData as any[];
 
   const level = (params.level as Level) || profile?.current_level || 'A1';
 
