@@ -87,7 +87,7 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
     const srs = calculateSRS(difficulty, ex?.ease_factor, ex?.interval_days, ex?.repetitions);
     const xp = getXPForDifficulty(difficulty);
 
-    await supabase.from('card_reviews').upsert({
+    await (supabase.from('card_reviews') as any).upsert({
       user_id: userId, card_id: card.id, level: card.level,
       ease_factor: srs.easeFactor, interval_days: srs.intervalDays,
       repetitions: srs.repetitions, next_review_at: srs.nextReviewAt.toISOString(),
@@ -106,7 +106,7 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
 
     if (idx + 1 >= cards.length) {
       const dur = Math.round((Date.now() - sessionStart) / 1000);
-      await supabase.from('study_sessions').insert({
+      await (supabase.from('study_sessions') as any).insert({
         user_id: userId, level: selectedLevel, exercise_type: 'mixed',
         cards_reviewed: cards.length, correct: newCorrect, xp_earned: newXP, duration_seconds: dur,
       });
