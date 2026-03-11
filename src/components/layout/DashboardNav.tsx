@@ -27,14 +27,13 @@ export default function DashboardNav({ profile, user }: Props) {
   const avatar = profile?.avatar_url;
 
   return (
-    <nav className="sticky top-0 z-50 glass border-b border-emerald-900/60">
+    <nav className="sticky top-0 z-50 glass border-b" style={{ borderColor: 'var(--border)' }}>
       <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/dashboard" className="flex items-center gap-2">
           <span className="text-xl">🟢</span>
-          <span className="font-black text-lg tracking-tight text-emerald-100 hidden sm:block">
-            Am<span className="text-emerald-400">OK</span>
-          </span>
+          <span className="font-black text-lg tracking-tight hidden sm:block" style={{ color: 'var(--text)' }}>
+          Am<span style={{ color: 'var(--green)' }}>OK</span>
         </Link>
 
         {/* Nav */}
