@@ -8,6 +8,7 @@ import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { formatXP } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface Props { profile: UserProfile | null; user: SupabaseUser; }
 
@@ -25,9 +26,7 @@ export default function DashboardNav({ profile, user }: Props) {
 
   const name = profile?.full_name?.split(' ')[0] || user.email?.split('@')[0] || 'Tú';
   const avatar = profile?.avatar_url;
-
-  const isActive = (href: string) =>
-    href === '/dashboard' ? pathname === href : pathname.startsWith(href);
+  const isActive = (href: string) => href === '/dashboard' ? pathname === href : pathname.startsWith(href);
 
   return (
     <nav className="sticky top-0 z-50 glass border-b" style={{ borderColor: 'var(--border)' }}>
@@ -41,42 +40,40 @@ export default function DashboardNav({ profile, user }: Props) {
           </span>
         </Link>
 
-        {/* Nav links */}
+        {/* Nav */}
         <div className="flex items-center gap-1">
-          <Link href="/dashboard"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-colors"
-            style={{
-              background: isActive('/dashboard') ? 'rgba(16,185,129,0.1)' : 'transparent',
-              color: isActive('/dashboard') ? 'var(--green-bright)' : 'var(--text2)',
-              border: isActive('/dashboard') ? '1px solid rgba(16,185,129,0.2)' : '1px solid transparent',
-            }}>
-            <LayoutDashboard className="w-4 h-4" />
-            <span className="hidden sm:block">Inicio</span>
-          </Link>
-          <Link href="/learn"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-colors"
-            style={{
-              background: isActive('/learn') ? 'rgba(16,185,129,0.1)' : 'transparent',
-              color: isActive('/learn') ? 'var(--green-bright)' : 'var(--text2)',
-              border: isActive('/learn') ? '1px solid rgba(16,185,129,0.2)' : '1px solid transparent',
-            }}>
-            <BookOpen className="w-4 h-4" />
-            <span className="hidden sm:block">Estudiar</span>
-          </Link>
+          {[
+            { href: '/dashboard', label: 'Inicio',   Icon: LayoutDashboard },
+            { href: '/learn',     label: 'Estudiar', Icon: BookOpen },
+          ].map(({ href, label, Icon }) => (
+            <Link key={href} href={href}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all"
+              style={{
+                background: isActive(href) ? 'var(--green-glow)' : 'transparent',
+                color: isActive(href) ? 'var(--green-bright)' : 'var(--text2)',
+                border: `1px solid ${isActive(href) ? 'rgba(16,185,129,0.25)' : 'transparent'}`,
+              }}>
+              <Icon className="w-4 h-4" />
+              <span className="hidden sm:block">{label}</span>
+            </Link>
+          ))}
         </div>
 
-        {/* User area */}
-        <div className="flex items-center gap-2.5">
+        {/* Right side */}
+        <div className="flex items-center gap-2">
           <div className="hidden sm:flex items-center gap-2">
             <span className="text-xs font-bold px-2.5 py-1 rounded-full border"
-              style={{ color: '#fbbf24', background: 'rgba(251,191,36,0.08)', borderColor: 'rgba(251,191,36,0.2)' }}>
+              style={{ color: 'var(--warning)', background: 'rgba(251,191,36,0.08)', borderColor: 'rgba(251,191,36,0.2)' }}>
               🔥 {profile?.streak_days ?? 0}
             </span>
             <span className="text-xs font-bold px-2.5 py-1 rounded-full border"
-              style={{ color: 'var(--green-bright)', background: 'rgba(16,185,129,0.08)', borderColor: 'rgba(16,185,129,0.2)' }}>
+              style={{ color: 'var(--green-bright)', background: 'var(--green-glow)', borderColor: 'rgba(16,185,129,0.2)' }}>
               ⚡ {formatXP(profile?.xp ?? 0)} XP
             </span>
           </div>
+
+          <ThemeToggle />
+
           <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden border"
             style={{ background: 'var(--green-dark)', borderColor: 'var(--border2)' }}>
             {avatar
@@ -84,6 +81,7 @@ export default function DashboardNav({ profile, user }: Props) {
               : <span className="text-xs font-black text-white">{name[0].toUpperCase()}</span>
             }
           </div>
+
           <button onClick={handleSignOut}
             className="p-2 rounded-lg transition-colors"
             style={{ color: 'var(--text3)' }}

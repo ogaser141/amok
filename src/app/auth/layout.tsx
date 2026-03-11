@@ -1,24 +1,27 @@
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="p-5">
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg)' }}>
+      <div className="p-4 flex items-center justify-between">
         <Link href="/"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-500 hover:text-emerald-300 transition-colors">
+          className="text-sm font-semibold transition-colors"
+          style={{ color: 'var(--text2)' }}>
           ← Volver
         </Link>
+        <ThemeToggle />
       </div>
       <div className="flex-1 flex items-center justify-center px-4 pb-10">
         <div className="w-full max-w-sm">
           <Link href="/" className="flex items-center justify-center gap-2.5 mb-8">
             <span className="text-3xl">🟢</span>
-            <span className="font-black text-2xl tracking-tight text-emerald-100">
-              Am<span className="text-emerald-400">OK</span>
+            <span className="font-black text-2xl tracking-tight" style={{ color: 'var(--text)' }}>
+              Am<span style={{ color: 'var(--green)' }}>OK</span>
             </span>
           </Link>
-          <div className="bg-emerald-950/60 border border-emerald-800/60 rounded-2xl p-7 shadow-xl"
-            style={{ boxShadow: '0 0 40px rgba(16,185,129,0.06)' }}>
+          <div className="rounded-2xl p-7 border"
+            style={{ background: 'var(--surface)', borderColor: 'var(--border)', boxShadow: 'var(--shadow)' }}>
             {children}
           </div>
         </div>
