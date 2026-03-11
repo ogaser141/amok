@@ -71,10 +71,44 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
   }, [card, mode]);
 
   function speak(text: string) {
-    if ('speechSynthesis' in window) {
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US'; u.rate = 0.9;
-      speechSynthesis.speak(u);
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+  
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    u.pitch = 1;
+  
+    const pickBestVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const englishVoices = voices.filter(v =>
+        v.lang.startsWith('en') && !v.name.toLowerCase().includes('espeak')
+      );
+  
+      // Prioridad: voces online/premium primero
+      const priority = [
+        'Samantha', 'Alex', 'Karen', 'Daniel',
+        'Google US English', 'Google UK English Female',
+        'Microsoft Aria', 'Microsoft Jenny', 'Microsoft Guy',
+      ];
+  
+      for (const name of priority) {
+        const v = englishVoices.find(v => v.name.includes(name));
+        if (v) { u.voice = v; break; }
+      }
+  
+      // Si no encontró ninguna preferida, usa la primera en inglés disponible
+      if (!u.voice && englishVoices.length > 0) {
+        u.voice = englishVoices[0];
+      }
+  
+      window.speechSynthesis.speak(u);
+    };
+  
+    if (window.speechSynthesis.getVoices().length > 0) {
+      pickBestVoice();
+    } else {
+      window.speechSynthesis.onvoiceschanged = pickBestVoice;
     }
   }
 
