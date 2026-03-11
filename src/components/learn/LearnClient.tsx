@@ -99,7 +99,7 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
     setSessionXP(newXP); setSessionCorrect(newCorrect);
 
     if (xp > 0) {
-      await supabase.from('profiles')
+      await (supabase.from('profiles') as any)
         .update({ xp: (profile?.xp || 0) + xp, last_study_date: new Date().toISOString() })
         .eq('id', userId);
     }
