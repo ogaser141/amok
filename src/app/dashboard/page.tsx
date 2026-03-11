@@ -33,68 +33,76 @@ export default async function DashboardPage() {
     <div className="space-y-6 animate-slide-up">
       {/* Greeting */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-black text-emerald-100 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color: 'var(--text)' }}>
           {getGreeting()}, {name}! 👋
         </h1>
-        <p className="text-emerald-500 mt-1 text-sm">{getMotivation(profile?.streak_days || 0)}</p>
+        <p className="mt-1 text-sm" style={{ color: 'var(--green)' }}>
+          {getMotivation(profile?.streak_days || 0)}
+        </p>
       </div>
 
-      {/* Stats row */}
+      {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
-        {[
-          { value: profile?.streak_days || 0, label: '🔥 Racha',   color: 'text-amber-300' },
-          { value: xp,                         label: '⚡ XP Total', color: 'text-emerald-300' },
-          { value: currentLevel,               label: '📊 Nivel',   color: li.color },
-        ].map((s, i) => (
-          <div key={i} className="bg-emerald-950/60 border border-emerald-800/50 rounded-2xl p-4 text-center">
-            <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
-            <div className="text-xs text-emerald-600 mt-0.5 font-medium">{s.label}</div>
-          </div>
-        ))}
+        <div className="rounded-2xl p-4 text-center border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+          <div className="text-2xl font-black" style={{ color: '#fbbf24' }}>{profile?.streak_days || 0}</div>
+          <div className="text-xs mt-0.5 font-medium" style={{ color: 'var(--text2)' }}>🔥 Racha</div>
+        </div>
+        <div className="rounded-2xl p-4 text-center border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+          <div className="text-2xl font-black" style={{ color: 'var(--green-bright)' }}>{xp}</div>
+          <div className="text-xs mt-0.5 font-medium" style={{ color: 'var(--text2)' }}>⚡ XP Total</div>
+        </div>
+        <div className="rounded-2xl p-4 text-center border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+          <div className="text-2xl font-black" style={{ color: 'var(--green-bright)' }}>{currentLevel}</div>
+          <div className="text-xs mt-0.5 font-medium" style={{ color: 'var(--text2)' }}>📊 Nivel</div>
+        </div>
       </div>
 
-      {/* Due cards CTA */}
+      {/* Due cards */}
       {dueCount > 0 && (
         <Link href="/learn"
-          className="flex items-center justify-between p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-400/50 transition-all group">
+          className="flex items-center justify-between p-4 rounded-2xl border transition-all group"
+          style={{ background: 'rgba(16,185,129,0.06)', borderColor: 'rgba(16,185,129,0.2)' }}>
           <div>
-            <div className="font-bold text-emerald-300 text-sm">
+            <div className="font-bold text-sm" style={{ color: 'var(--green-bright)' }}>
               ⏰ {dueCount} tarjeta{dueCount !== 1 ? 's' : ''} pendiente{dueCount !== 1 ? 's' : ''} de repasar
             </div>
-            <div className="text-xs text-emerald-600 mt-0.5">El momento perfecto para reforzar tu memoria</div>
+            <div className="text-xs mt-0.5" style={{ color: 'var(--text2)' }}>
+              El momento perfecto para reforzar tu memoria
+            </div>
           </div>
-          <span className="text-emerald-400 font-bold text-sm group-hover:translate-x-1 transition-transform">Repasar →</span>
+          <span className="font-bold text-sm group-hover:translate-x-1 transition-transform" style={{ color: 'var(--green)' }}>
+            Repasar →
+          </span>
         </Link>
       )}
 
       {/* Level progress */}
-      <div className="bg-emerald-950/60 border border-emerald-800/50 rounded-2xl p-5">
+      <div className="rounded-2xl p-5 border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <div className="flex items-center justify-between mb-3">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xl">{li.emoji}</span>
-              <span className={`text-lg font-black ${li.color}`}>{currentLevel}</span>
-              <span className="font-bold text-emerald-200">{li.name}</span>
+              <span className="text-lg font-black" style={{ color: 'var(--green-bright)' }}>{currentLevel}</span>
+              <span className="font-bold" style={{ color: 'var(--text)' }}>{li.name}</span>
             </div>
-            <div className="text-xs text-emerald-600 mt-0.5">{li.description}</div>
+            <div className="text-xs mt-0.5" style={{ color: 'var(--text2)' }}>{li.description}</div>
           </div>
           {nextLv && (
             <div className="text-right">
-              <div className="text-xs text-emerald-600">Siguiente</div>
-              <div className="font-black text-emerald-300 text-sm">{nextLv.emoji} {nextLv.id}</div>
+              <div className="text-xs" style={{ color: 'var(--text3)' }}>Siguiente</div>
+              <div className="font-black text-sm" style={{ color: 'var(--text)' }}>{nextLv.emoji} {nextLv.id}</div>
             </div>
           )}
         </div>
-        <div className="h-2.5 bg-emerald-950 rounded-full overflow-hidden border border-emerald-900">
+        <div className="h-2.5 rounded-full overflow-hidden" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
           <div className="h-full rounded-full transition-all duration-1000"
             style={{
               width: `${pct}%`,
               background: 'linear-gradient(90deg, #059669 0%, #34d399 100%)',
-              boxShadow: '0 0 8px rgba(52,211,153,0.5)',
-            }}
-          />
+              boxShadow: '0 0 8px rgba(52,211,153,0.4)',
+            }} />
         </div>
-        <div className="flex justify-between text-xs text-emerald-700 mt-1.5">
+        <div className="flex justify-between text-xs mt-1.5" style={{ color: 'var(--text3)' }}>
           <span>{xp} XP</span>
           {nextLv && <span>{nextLv.minXP} XP</span>}
         </div>
@@ -102,7 +110,9 @@ export default async function DashboardPage() {
 
       {/* Levels grid */}
       <div>
-        <h2 className="text-xs font-bold text-emerald-700 uppercase tracking-[.15em] mb-3">Todos los niveles</h2>
+        <h2 className="text-xs font-bold uppercase tracking-[.15em] mb-3" style={{ color: 'var(--text3)' }}>
+          Todos los niveles
+        </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {Object.values(LEVEL_INFO).map(level => {
             const unlocked = xp >= level.minXP;
@@ -110,19 +120,26 @@ export default async function DashboardPage() {
             return (
               <Link key={level.id}
                 href={unlocked ? `/learn?level=${level.id}` : '#'}
-                className={`p-4 rounded-2xl border transition-all ${
-                  current  ? `${level.bg} ${level.border} border-opacity-80` :
-                  unlocked ? 'bg-emerald-950/50 border-emerald-800/50 hover:border-emerald-600/50' :
-                             'bg-emerald-950/30 border-emerald-900/40 opacity-40 cursor-not-allowed'
-                }`}>
+                className="p-4 rounded-2xl border transition-all"
+                style={{
+                  background: current ? 'rgba(16,185,129,0.07)' : 'var(--surface)',
+                  borderColor: current ? 'rgba(16,185,129,0.3)' : 'var(--border)',
+                  opacity: unlocked ? 1 : 0.4,
+                  cursor: unlocked ? 'pointer' : 'not-allowed',
+                }}>
                 <div className="flex justify-between items-start mb-1">
                   <span className="text-xl">{level.emoji}</span>
-                  {current  && <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-1.5 py-0.5 rounded-full">Actual</span>}
+                  {current && (
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full border"
+                      style={{ color: 'var(--green)', background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.25)' }}>
+                      Actual
+                    </span>
+                  )}
                   {!unlocked && <span className="text-xs">🔒</span>}
                 </div>
-                <div className={`text-xl font-black ${level.color}`}>{level.id}</div>
-                <div className="text-xs font-semibold text-emerald-300 mt-0.5">{level.name}</div>
-                <div className="text-[11px] text-emerald-700 mt-1">
+                <div className="text-xl font-black" style={{ color: 'var(--green-bright)' }}>{level.id}</div>
+                <div className="text-xs font-semibold mt-0.5" style={{ color: 'var(--text)' }}>{level.name}</div>
+                <div className="text-[11px] mt-1" style={{ color: 'var(--text3)' }}>
                   {unlocked ? `${level.totalCards} tarjetas ✓` : `${level.minXP} XP necesarios`}
                 </div>
               </Link>
@@ -134,30 +151,39 @@ export default async function DashboardPage() {
       {/* Recent sessions */}
       {sessions && sessions.length > 0 && (
         <div>
-          <h2 className="text-xs font-bold text-emerald-700 uppercase tracking-[.15em] mb-3">Sesiones recientes</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[.15em] mb-3" style={{ color: 'var(--text3)' }}>
+            Sesiones recientes
+          </h2>
           <div className="space-y-2">
-            {sessions.map(s => (
+            {sessions.map((s: any) => (
               <div key={s.id}
-                className="flex items-center justify-between p-3.5 bg-emerald-950/50 border border-emerald-900/60 rounded-xl">
+                className="flex items-center justify-between p-3.5 rounded-xl border"
+                style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center">
-                    <BookOpen className="w-4 h-4 text-emerald-500" />
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center border"
+                    style={{ background: 'rgba(16,185,129,0.08)', borderColor: 'rgba(16,185,129,0.15)' }}>
+                    <BookOpen className="w-4 h-4" style={{ color: 'var(--green)' }} />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-emerald-200">Nivel {s.level} — {s.cards_reviewed} tarjetas</div>
-                    <div className="text-xs text-emerald-600">{s.correct}/{s.cards_reviewed} correctas · {s.duration_seconds}s</div>
+                    <div className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
+                      Nivel {s.level} — {s.cards_reviewed} tarjetas
+                    </div>
+                    <div className="text-xs" style={{ color: 'var(--text2)' }}>
+                      {s.correct}/{s.cards_reviewed} correctas · {s.duration_seconds}s
+                    </div>
                   </div>
                 </div>
-                <span className="text-xs font-bold text-amber-400">+{s.xp_earned} XP</span>
+                <span className="text-xs font-bold" style={{ color: '#fbbf24' }}>+{s.xp_earned} XP</span>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Main CTA */}
+      {/* CTA */}
       <Link href="/learn"
-        className="flex items-center justify-center gap-3 w-full py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-base transition-all btn-glow">
+        className="flex items-center justify-center gap-3 w-full py-4 rounded-2xl text-white font-black text-base transition-all btn-glow"
+        style={{ background: 'var(--green-dark)' }}>
         <BookOpen className="w-5 h-5" />
         Comenzar a estudiar ahora
       </Link>
