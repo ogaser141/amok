@@ -1,0 +1,261 @@
+import type { ExamQuestion } from './examTypes';
+
+export const C1_QUESTIONS: ExamQuestion[] = [
+  // ── VOCABULARIO (15) ───────────────────────────────────────
+  {
+    id: 'v_c1_01', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Eloquent"?',
+    options: ['Confuso', 'Elocuente', 'Breve', 'Técnico'],
+    correct: 1,
+  },
+  {
+    id: 'v_c1_02', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "To corroborate"?',
+    options: ['Contradecir', 'Ignorar', 'Corroborar', 'Cuestionar'],
+    correct: 2,
+  },
+  {
+    id: 'v_c1_03', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Ephemeral"?',
+    options: ['Permanente', 'Efímero', 'Esencial', 'Espiritual'],
+    correct: 1,
+  },
+  {
+    id: 'v_c1_04', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Tenacious"?',
+    options: ['Tenaz', 'Temporal', 'Tenue', 'Técnico'],
+    correct: 0,
+  },
+  {
+    id: 'v_c1_05', type: 'vocabulary', level: 'C1',
+    question: '¿Cómo se dice "perspicacia" en inglés?',
+    options: ['Wisdom', 'Acumen', 'Intellect', 'Shrewdness'],
+    correct: 1,
+  },
+  {
+    id: 'v_c1_06', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "To exacerbate"?',
+    options: ['Mejorar', 'Eliminar', 'Exacerbar', 'Examinar'],
+    correct: 2,
+  },
+  {
+    id: 'v_c1_07', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Pragmatic"?',
+    options: ['Teórico', 'Optimista', 'Pragmático', 'Pesimista'],
+    correct: 2,
+  },
+  {
+    id: 'v_c1_08', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Ubiquitous"?',
+    options: ['Raro', 'Omnipresente', 'Único', 'Universal'],
+    correct: 1,
+  },
+  {
+    id: 'v_c1_09', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Cynical"?',
+    options: ['Optimista', 'Cínico', 'Crítico', 'Curioso'],
+    correct: 1,
+  },
+  {
+    id: 'v_c1_10', type: 'vocabulary', level: 'C1',
+    question: '¿Cómo se dice "inminente" en inglés?',
+    options: ['Imminent', 'Important', 'Eminent', 'Immense'],
+    correct: 0,
+  },
+  {
+    id: 'v_c1_11', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Convoluted"?',
+    options: ['Claro', 'Simple', 'Enrevesado', 'Conciso'],
+    correct: 2,
+  },
+  {
+    id: 'v_c1_12', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "To inadvertently"?',
+    options: ['Deliberadamente', 'Frecuentemente', 'Sin querer', 'Públicamente'],
+    correct: 2,
+  },
+  {
+    id: 'v_c1_13', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Paramount"?',
+    options: ['Secundario', 'De suma importancia', 'Paralelo', 'Parcial'],
+    correct: 1,
+  },
+  {
+    id: 'v_c1_14', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "To alleviate"?',
+    options: ['Intensificar', 'Aliviar', 'Elevar', 'Alterar'],
+    correct: 1,
+  },
+  {
+    id: 'v_c1_15', type: 'vocabulary', level: 'C1',
+    question: '¿Qué significa "Discrepancy"?',
+    options: ['Acuerdo', 'Discrepancia', 'Descripción', 'Discurso'],
+    correct: 1,
+  },
+
+  // ── GRAMÁTICA (13) ─────────────────────────────────────────
+  {
+    id: 'g_c1_01', type: 'grammar', level: 'C1',
+    question: 'Completa: "The treaty, ___ was signed in 1945, still governs international relations."',
+    options: ['which', 'that', 'what', 'who'],
+    correct: 0,
+  },
+  {
+    id: 'g_c1_02', type: 'grammar', level: 'C1',
+    question: 'Completa: "Only by working together ___ we solve this crisis."',
+    options: ['can', 'we can', 'could', 'we could'],
+    correct: 0,
+  },
+  {
+    id: 'g_c1_03', type: 'grammar', level: 'C1',
+    question: 'Completa: "The findings ___ to suggest a fundamental flaw in the methodology."',
+    options: ['appear', 'appears', 'are appearing', 'appeared'],
+    correct: 0,
+  },
+  {
+    id: 'g_c1_04', type: 'grammar', level: 'C1',
+    question: 'Completa: "She ___ the project alone, which made the achievement more remarkable."',
+    options: ['is said to complete', 'is said to have completed', 'said that she completed', 'was saying she completed'],
+    correct: 1,
+  },
+  {
+    id: 'g_c1_05', type: 'grammar', level: 'C1',
+    question: 'Completa: "Such ___ the pressure that several team members resigned."',
+    options: ['is', 'was', 'has been', 'were'],
+    correct: 1,
+  },
+  {
+    id: 'g_c1_06', type: 'grammar', level: 'C1',
+    question: 'Completa: "The evidence, ___ ambiguous, points to a systemic failure."',
+    options: ['although is', 'though is', 'albeit', 'despite'],
+    correct: 2,
+  },
+  {
+    id: 'g_c1_07', type: 'grammar', level: 'C1',
+    question: 'Completa: "He denied ___ any knowledge of the fraud."',
+    options: ['to have', 'having', 'that he had', 'to having'],
+    correct: 1,
+  },
+  {
+    id: 'g_c1_08', type: 'grammar', level: 'C1',
+    question: 'Completa: "___ the circumstances, the decision was understandable."',
+    options: ['Given', 'Giving', 'Give', 'To give'],
+    correct: 0,
+  },
+  {
+    id: 'g_c1_09', type: 'grammar', level: 'C1',
+    question: 'Completa: "The committee ___ a decision by the end of the month."',
+    options: ['is expected reaching', 'is expected to reach', 'expects to reaching', 'expected reaching'],
+    correct: 1,
+  },
+  {
+    id: 'g_c1_10', type: 'grammar', level: 'C1',
+    question: 'Completa: "Under no circumstances ___ this information be shared publicly."',
+    options: ['should', 'this should', 'it should', 'would'],
+    correct: 0,
+  },
+  {
+    id: 'g_c1_11', type: 'grammar', level: 'C1',
+    question: 'Completa: "The proposal, ___ initially rejected, was later adopted unanimously."',
+    options: ['having', 'though', 'that was', 'which was'],
+    correct: 3,
+  },
+  {
+    id: 'g_c1_12', type: 'grammar', level: 'C1',
+    question: 'Completa: "I ___ sooner had I known about the complications."',
+    options: ['would have left', 'had left', 'would leave', 'will have left'],
+    correct: 0,
+  },
+  {
+    id: 'g_c1_13', type: 'grammar', level: 'C1',
+    question: 'Completa: "The more funding allocated, ___ the results."',
+    options: ['better will be', 'the better will be', 'the better', 'better the'],
+    correct: 2,
+  },
+
+  // ── COMPRENSIÓN (7) ────────────────────────────────────────
+  {
+    id: 'c_c1_01', type: 'comprehension', level: 'C1',
+    context: 'The Dunning-Kruger effect describes a cognitive bias in which people with limited knowledge in a domain overestimate their own competence. Conversely, experts tend to underestimate their abilities because they are acutely aware of the complexity of their field. This asymmetry has profound implications for education, leadership, and public discourse.',
+    question: '¿Qué plantea el efecto Dunning-Kruger sobre los expertos?',
+    options: [
+      'Que los expertos siempre sobreestiman su competencia',
+      'Que los expertos tienden a subestimar sus habilidades',
+      'Que los expertos no son conscientes de su campo',
+      'Que los expertos tienen sesgos cognitivos mayores',
+    ],
+    correct: 1,
+  },
+  {
+    id: 'c_c1_02', type: 'comprehension', level: 'C1',
+    context: 'Narrative transportation — the phenomenon whereby readers become so absorbed in a story that they lose awareness of their surroundings — has been shown to increase empathy and change attitudes more effectively than factual arguments. This finding has significant implications for how we might use storytelling in public health campaigns and social advocacy.',
+    question: '¿Por qué podría ser el storytelling más efectivo que los argumentos factuales según el texto?',
+    options: [
+      'Porque es más fácil de entender para el público general',
+      'Porque absorbe a los lectores y cambia actitudes más efectivamente',
+      'Porque requiere menos evidencia científica',
+      'Porque es más entretenido que los datos estadísticos',
+    ],
+    correct: 1,
+  },
+  {
+    id: 'c_c1_03', type: 'comprehension', level: 'C1',
+    context: 'The precautionary principle holds that when an action raises threats of harm to human health or the environment, precautionary measures should be taken even if some cause-and-effect relationships are not fully established scientifically. Critics argue this principle can stifle innovation, while proponents contend it is essential for protecting against irreversible damage.',
+    question: '¿Cuál es la crítica al principio de precaución mencionada en el texto?',
+    options: [
+      'Que protege demasiado el medio ambiente',
+      'Que puede frenar la innovación',
+      'Que no tiene base científica',
+      'Que es difícil de aplicar legalmente',
+    ],
+    correct: 1,
+  },
+  {
+    id: 'c_c1_04', type: 'comprehension', level: 'C1',
+    context: 'Post-truth politics refers to a political culture in which factual rebuttals no longer persuade people. Instead, emotional appeals and personal beliefs play a dominant role in shaping public opinion. The proliferation of social media echo chambers has accelerated this trend, making it increasingly difficult to establish shared factual ground.',
+    question: '¿Qué ha acelerado la tendencia de la política post-verdad según el texto?',
+    options: [
+      'El declive de la educación pública',
+      'La desaparición de los medios tradicionales',
+      'La proliferación de cámaras de eco en redes sociales',
+      'La polarización de los partidos políticos',
+    ],
+    correct: 2,
+  },
+  {
+    id: 'c_c1_05', type: 'comprehension', level: 'C1',
+    context: 'Dark patterns are user interface design choices that trick users into doing things they did not intend to, such as subscribing to a service or sharing personal data. While legally ambiguous in many jurisdictions, regulators are increasingly scrutinizing these practices as consumer protection concerns mount.',
+    question: '¿Qué son los "dark patterns" según el texto?',
+    options: [
+      'Diseños de interfaz que mejoran la experiencia del usuario',
+      'Patrones de diseño UI que engañan a los usuarios para hacer acciones no deseadas',
+      'Algoritmos que recopilan datos ilegalmente',
+      'Técnicas de marketing digital agresivas',
+    ],
+    correct: 1,
+  },
+  {
+    id: 'c_c1_06', type: 'comprehension', level: 'C1',
+    context: 'The concept of degrowth challenges the prevailing assumption that economic growth is inherently desirable. Proponents argue that on a planet with finite resources, endless growth is not only unsustainable but actively harmful. Instead, they advocate for a deliberate reduction in production and consumption, particularly in wealthy nations, coupled with improved distribution of existing resources.',
+    question: '¿Qué propone el concepto de "degrowth"?',
+    options: [
+      'Aumentar la producción de manera sostenible',
+      'Reducir deliberadamente la producción y el consumo en naciones ricas',
+      'Redistribuir la riqueza sin cambiar los niveles de producción',
+      'Eliminar el sistema económico capitalista',
+    ],
+    correct: 1,
+  },
+  {
+    id: 'c_c1_07', type: 'comprehension', level: 'C1',
+    context: 'Linguistic relativity — the hypothesis that the language we speak influences our perception and cognition — remains controversial in linguistics. Strong versions of the hypothesis, which claim language determines thought, have largely been discredited. However, weaker versions suggesting that language influences certain cognitive processes have gained empirical support.',
+    question: '¿Qué versión de la relatividad lingüística tiene apoyo empírico según el texto?',
+    options: [
+      'La versión fuerte, que dice que el lenguaje determina el pensamiento',
+      'La versión débil, que sugiere que el lenguaje influye ciertos procesos cognitivos',
+      'La hipótesis completa en todas sus formas',
+      'Ninguna versión tiene apoyo científico actualmente',
+    ],
+    correct: 1,
+  },
+];
