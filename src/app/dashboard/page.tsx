@@ -180,6 +180,13 @@ export default async function DashboardPage() {
         </div>
       )}
 
+      {/* Retake exam */}
+      <Link href="/exam"
+        className="flex items-center justify-center gap-3 w-full py-3.5 rounded-2xl font-semibold text-sm transition-all border"
+        style={{ background: 'transparent', borderColor: 'var(--border)', color: 'var(--text2)' }}>
+        🎯 Repetir examen de nivel
+      </Link>
+
       {/* CTA */}
       <Link href="/learn"
         className="flex items-center justify-center gap-3 w-full py-4 rounded-2xl text-white font-black text-base transition-all btn-glow"
