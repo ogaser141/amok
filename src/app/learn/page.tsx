@@ -3,27 +3,26 @@ import { redirect } from 'next/navigation';
 import LearnClient from '@/components/learn/LearnClient';
 import type { Level } from '@/types/database';
 
-interface Props { searchParams: Promise<{ level?: string }>; }
-
-export default async function LearnPage({ searchParams }: Props) {
+export default async function LearnPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/auth/login');
 
-  const params = await searchParams;
-  const { data: profileData } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-  const profile = profileData as any;
-  const { data: reviewsData } = await supabase.from('card_reviews').select('*').eq('user_id', user.id);
-  const reviews = reviewsData as any[];
+  const [{ data: profile }, { data: reviews }, { data: achievements }] = await Promise.all([
+    supabase.from('profiles').select('*').eq('id', user.id).single(),
+    (supabase.from('card_reviews') as any).select('*').eq('user_id', user.id),
+    (supabase.from('achievements') as any).select('achievement_id').eq('user_id', user.id),
+  ]);
 
-  const level = (params.level as Level) || profile?.current_level || 'A1';
+  const unlockedAchievements = (achievements || []).map((a: any) => a.achievement_id);
 
   return (
     <LearnClient
       userId={user.id}
-      profile={profile}
+      profile={profile as any}
       existingReviews={reviews || []}
-      initialLevel={level as Level}
+      initialLevel={(profile as any)?.current_level as Level || 'A1'}
+      unlockedAchievements={unlockedAchievements}
     />
   );
 }
