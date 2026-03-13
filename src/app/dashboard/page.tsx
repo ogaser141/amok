@@ -16,7 +16,7 @@ export default async function DashboardPage() {
     (supabase.from('card_reviews') as any).select('*').eq('user_id', user.id),
     (supabase.from('achievements') as any).select('achievement_id').eq('user_id', user.id),
     (supabase.from('study_sessions') as any).select('cards_reviewed').eq('user_id', user.id)
-      .gte('started_at', new Date(new Date().setHours(0,0,0,0)).toISOString()),
+      .gte('started_at', new Date(new Date().setHours(0, 0, 0, 0)).toISOString()),
   ]);
 
   const p = profile as any;
@@ -36,8 +36,8 @@ export default async function DashboardPage() {
 
   const LEVEL_XP: Record<string, number> = { A1: 0, A2: 200, B1: 600, B2: 1400, C1: 2600 };
   const currentMin = LEVEL_XP[level] || 0;
-  const nextMin    = nextLevelInfo ? LEVEL_XP[nextLevelInfo.id] || xp : xp;
-  const levelPct   = nextLevelInfo ? Math.min(100, Math.round(((xp - currentMin) / (nextMin - currentMin)) * 100)) : 100;
+  const nextMin = nextLevelInfo ? LEVEL_XP[nextLevelInfo.id] || xp : xp;
+  const levelPct = nextLevelInfo ? Math.min(100, Math.round(((xp - currentMin) / (nextMin - currentMin)) * 100)) : 100;
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
@@ -51,12 +51,19 @@ export default async function DashboardPage() {
               {streak > 0 ? `🔥 ${streak} días de racha — ¡sigue así!` : '¡Comienza tu racha hoy!'}
             </p>
           </div>
-          <Link href="/stats"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold border transition-all"
-            style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text2)' }}>
-            <BarChart2 className="w-4 h-4" />
-            <span className="hidden sm:block">Stats</span>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/exam"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold border transition-all"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text2)' }}>
+              🎯 <span className="hidden sm:block">Repetir examen</span>
+            </Link>
+            <Link href="/stats"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold border transition-all"
+              style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text2)' }}>
+              <BarChart2 className="w-4 h-4" />
+              <span className="hidden sm:block">Stats</span>
+            </Link>
+          </div>
         </div>
 
         {/* Meta diaria */}

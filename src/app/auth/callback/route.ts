@@ -10,12 +10,20 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      // Check if user has already taken the exam (has XP or non-default level set intentionally)
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data: profile } = await supabase
-          .from('profiles').select('xp, streak_days').eq('id', user.id).single();
-        const isNewUser = !(profile as any)?.xp && !(profile as any)?.streak_days;
+          .from('profiles')
+          .select('xp, streak_days, current_level')
+          .eq('id', user.id)
+          .single();
+
+        // Nuevo usuario si no tiene perfil o tiene xp=0 y nunca estudió
+        const isNewUser = !profile || (
+          (profile as any)?.xp === 0 &&
+          (profile as any)?.streak_days === 0
+        );
+
         if (isNewUser) return NextResponse.redirect(`${origin}/exam`);
       }
       return NextResponse.redirect(`${origin}${next}`);
