@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import Logo from '@/components/Logo';
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -31,12 +32,7 @@ export default async function HomePage() {
       {/* Navbar */}
       <nav className="fixed top-0 inset-x-0 z-50 glass border-b" style={{ borderColor: 'var(--border)' }}>
         <div className="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="text-2xl">🟢</span>
-            <span className="font-black text-xl tracking-tight" style={{ color: 'var(--text)' }}>
-              Am<span style={{ color: 'var(--green)' }}>OK</span>
-            </span>
-          </div>
+          <Logo size="sm" href="/" />
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Link href="/auth/login"
@@ -60,13 +56,12 @@ export default async function HomePage() {
             style={{ background: 'var(--green-glow)', color: 'var(--green)', borderColor: 'rgba(16,185,129,0.2)' }}>
             ✨ 100% Gratis · Sin publicidad · Sin límites
           </div>
-          <h1 className="text-5xl sm:text-7xl font-black tracking-tight leading-[1.0] mb-6">
-            <span className="gradient-text">AmOK</span>
-            <br />
-            <span className="text-2xl sm:text-4xl font-bold" style={{ color: 'var(--text)' }}>
-              Aprende inglés de verdad
-            </span>
-          </h1>
+
+          {/* Logo grande en hero */}
+          <div className="flex justify-center mb-6">
+            <Logo size="lg" href="/" showTagline />
+          </div>
+
           <p className="text-lg max-w-2xl mx-auto mb-10 leading-relaxed" style={{ color: 'var(--text2)' }}>
             Usamos el mismo algoritmo de repetición espaciada que Anki —{' '}
             <strong style={{ color: 'var(--text)' }}>el método más efectivo que existe</strong> —
@@ -93,8 +88,8 @@ export default async function HomePage() {
           </p>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
             {levels.map((l, i) => (
-              <div key={l.id} className="rounded-2xl p-4 text-center border transition-colors"
-                style={{ background: 'var(--surface)', borderColor: 'var(--border)', animationDelay: `${i * 70}ms` }}>
+              <div key={l.id} className="rounded-2xl p-4 text-center border"
+                style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
                 <div className="text-2xl mb-1">{l.emoji}</div>
                 <div className="text-base font-black" style={{ color: 'var(--green)' }}>{l.id}</div>
                 <div className="text-[11px] mt-0.5 leading-tight" style={{ color: 'var(--text3)' }}>{l.name}</div>
@@ -110,7 +105,7 @@ export default async function HomePage() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {features.map((f, i) => (
-              <div key={i} className="p-6 rounded-2xl border transition-all"
+              <div key={i} className="p-6 rounded-2xl border"
                 style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
                 <div className="text-3xl mb-3">{f.icon}</div>
                 <h3 className="font-bold mb-1.5" style={{ color: 'var(--text)' }}>{f.title}</h3>
@@ -120,35 +115,13 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* How it works */}
-        <div className="mb-20 p-8 sm:p-12 rounded-3xl border"
-          style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-          <h2 className="text-2xl font-black text-center mb-8" style={{ color: 'var(--text)' }}>
-            ¿Cómo funciona AmOK?
-          </h2>
-          <div className="grid sm:grid-cols-3 gap-6 text-center">
-            {[
-              { n:'1', title:'Ves la tarjeta',      desc:'Una palabra o frase en inglés aparece en pantalla. Escúchala, léela, piensa en su significado.' },
-              { n:'2', title:'Calificas tu memoria', desc:'Voltea la tarjeta y dices si fue fácil, difícil o no la recordaste.' },
-              { n:'3', title:'El algoritmo programa',desc:'AmOK calcula cuándo debes volver a ver esa tarjeta para recordarla para siempre.' },
-            ].map(s => (
-              <div key={s.n} className="flex flex-col items-center">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-lg mb-3"
-                  style={{ background: 'var(--green-dark)' }}>
-                  {s.n}
-                </div>
-                <h3 className="font-bold mb-1" style={{ color: 'var(--text)' }}>{s.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--text2)' }}>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* CTA */}
         <div className="text-center p-12 rounded-3xl border"
           style={{ background: 'var(--surface2)', borderColor: 'var(--border2)' }}>
-          <div className="text-5xl mb-4">🎯</div>
-          <h2 className="text-3xl font-black mb-3" style={{ color: 'var(--text)' }}>¿Listo para empezar?</h2>
+          <div className="flex justify-center mb-4">
+            <Logo size="md" showTagline />
+          </div>
+          <h2 className="text-3xl font-black mb-3 mt-4" style={{ color: 'var(--text)' }}>¿Listo para empezar?</h2>
           <p className="mb-8" style={{ color: 'var(--text2)' }}>Crea tu cuenta en 30 segundos. Sin tarjeta de crédito.</p>
           <Link href="/auth/signup"
             className="inline-flex items-center gap-2 text-white font-black px-10 py-4 rounded-2xl text-lg transition-all btn-glow"

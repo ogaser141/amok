@@ -9,6 +9,7 @@ import { formatXP } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import Logo from '@/components/Logo';
 
 interface Props { profile: UserProfile | null; user: SupabaseUser; }
 
@@ -31,17 +32,11 @@ export default function DashboardNav({ profile, user }: Props) {
   return (
     <nav className="sticky top-0 z-50 glass border-b" style={{ borderColor: 'var(--border)' }}>
       <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-
-        {/* Logo */}
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <Image src="/amok-logo.svg" alt="AmOK" width={80} height={34} />
-        </Link>
-
-        {/* Nav */}
+        <Logo size="sm" href="/dashboard" />
         <div className="flex items-center gap-1">
           {[
-            { href: '/dashboard', label: 'Inicio', Icon: LayoutDashboard },
-            { href: '/learn', label: 'Estudiar', Icon: BookOpen },
+            { href: '/dashboard', label: 'Inicio',   Icon: LayoutDashboard },
+            { href: '/learn',     label: 'Estudiar', Icon: BookOpen },
           ].map(({ href, label, Icon }) => (
             <Link key={href} href={href}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all"
@@ -55,8 +50,6 @@ export default function DashboardNav({ profile, user }: Props) {
             </Link>
           ))}
         </div>
-
-        {/* Right side */}
         <div className="flex items-center gap-2">
           <div className="hidden sm:flex items-center gap-2">
             <span className="text-xs font-bold px-2.5 py-1 rounded-full border"
@@ -68,9 +61,7 @@ export default function DashboardNav({ profile, user }: Props) {
               ⚡ {formatXP(profile?.xp ?? 0)} XP
             </span>
           </div>
-
           <ThemeToggle />
-
           <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden border"
             style={{ background: 'var(--green-dark)', borderColor: 'var(--border2)' }}>
             {avatar
@@ -78,11 +69,9 @@ export default function DashboardNav({ profile, user }: Props) {
               : <span className="text-xs font-black text-white">{name[0].toUpperCase()}</span>
             }
           </div>
-
           <button onClick={handleSignOut}
             className="p-2 rounded-lg transition-colors"
-            style={{ color: 'var(--text3)' }}
-            title="Cerrar sesión">
+            style={{ color: 'var(--text3)' }} title="Cerrar sesión">
             <LogOut className="w-4 h-4" />
           </button>
         </div>
