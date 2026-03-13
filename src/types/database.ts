@@ -77,6 +77,12 @@ export interface UserProfile {
   streak_days: number;
   last_study_date: string | null;
   daily_goal_minutes: number;
+
+  // Nuevos campos
+  total_words_learned: number;
+  total_sessions: number;
+  best_streak: number;
+  daily_goal: number;
 }
 
 export interface LevelInfo {
