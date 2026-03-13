@@ -9,8 +9,10 @@ const geistMono = Geist_Mono({ variable: '--font-mono', subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'AmOK — Aprende inglés con inteligencia',
-  description: 'Aprende inglés con repetición espaciada SRS, niveles CEFR A1-C2 y ejercicios interactivos.',
-  manifest: '/manifest.json',
+  icons: {
+    icon: '/amok-icon.svg',
+    apple: '/amok-icon.svg',
+  },
 };
 
 export const viewport: Viewport = {

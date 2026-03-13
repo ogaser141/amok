@@ -34,17 +34,14 @@ export default function DashboardNav({ profile, user }: Props) {
 
         {/* Logo */}
         <Link href="/dashboard" className="flex items-center gap-2">
-          <span className="text-xl">🟢</span>
-          <span className="font-black text-lg tracking-tight hidden sm:block" style={{ color: 'var(--text)' }}>
-            Am<span style={{ color: 'var(--green)' }}>OK</span>
-          </span>
+          <Image src="/amok-logo.svg" alt="AmOK" width={80} height={34} />
         </Link>
 
         {/* Nav */}
         <div className="flex items-center gap-1">
           {[
-            { href: '/dashboard', label: 'Inicio',   Icon: LayoutDashboard },
-            { href: '/learn',     label: 'Estudiar', Icon: BookOpen },
+            { href: '/dashboard', label: 'Inicio', Icon: LayoutDashboard },
+            { href: '/learn', label: 'Estudiar', Icon: BookOpen },
           ].map(({ href, label, Icon }) => (
             <Link key={href} href={href}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all"
