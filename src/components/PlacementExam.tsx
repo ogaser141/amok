@@ -15,18 +15,18 @@ interface Props { userId: string; userName: string; }
 type Screen = 'intro' | 'exam' | 'result';
 
 const TYPE_LABEL: Record<string, string> = {
-  vocabulary:    '📖 Vocabulario',
-  grammar:       '✍️ Gramática',
+  vocabulary: '📖 Vocabulario',
+  grammar: '✍️ Gramática',
   comprehension: '📄 Comprensión',
-  listening:     '🔊 Escucha',
+  listening: '🔊 Escucha',
 };
 
 const LEVEL_INFO: Record<ExamLevel, { emoji: string; name: string; desc: string; color: string }> = {
-  A1: { emoji: '🌱', name: 'Principiante',    color: '#34d399', desc: 'Empezarás con lo más esencial — saludos, números, colores y frases del día a día.' },
-  A2: { emoji: '🌿', name: 'Básico',          color: '#10b981', desc: 'Tienes una base sólida. Estudiarás trabajo, viajes, salud y conversaciones cotidianas.' },
-  B1: { emoji: '🌳', name: 'Intermedio',      color: '#059669', desc: '¡Buen nivel! Trabajarás con negocios, medio ambiente y gramática avanzada.' },
+  A1: { emoji: '🌱', name: 'Principiante', color: '#34d399', desc: 'Empezarás con lo más esencial — saludos, números, colores y frases del día a día.' },
+  A2: { emoji: '🌿', name: 'Básico', color: '#10b981', desc: 'Tienes una base sólida. Estudiarás trabajo, viajes, salud y conversaciones cotidianas.' },
+  B1: { emoji: '🌳', name: 'Intermedio', color: '#059669', desc: '¡Buen nivel! Trabajarás con negocios, medio ambiente y gramática avanzada.' },
   B2: { emoji: '🌲', name: 'Intermedio Alto', color: '#047857', desc: 'Nivel avanzado. Matices, conectores complejos y comprensión profunda.' },
-  C1: { emoji: '🏔️', name: 'Avanzado',        color: '#065f46', desc: '¡Excelente! Dominas el inglés a nivel casi nativo.' },
+  C1: { emoji: '🏔️', name: 'Avanzado', color: '#065f46', desc: '¡Excelente! Dominas el inglés a nivel casi nativo.' },
 };
 
 function speak(text: string) {
@@ -119,16 +119,22 @@ export default function PlacementExam({ userId, userName }: Props) {
     setAdaptive(finalState);
     setScreen('result');
     setSaving(true);
+
+    const XP_FOR_LEVEL: Record<string, number> = {
+      A1: 0, A2: 200, B1: 600, B2: 1400, C1: 2600,
+    };
+
     await (supabase.from('profiles') as any)
-      .update({ current_level: level })
+      .update({ current_level: level, xp: XP_FOR_LEVEL[level] ?? 0 })
       .eq('id', userId);
+
     setSaving(false);
     toast.success(`Nivel detectado: ${level} 🎯`);
   }
 
   async function skipExam() {
     await (supabase.from('profiles') as any)
-      .update({ current_level: 'A1' })
+      .update({ current_level: 'A1', xp: 0 })
       .eq('id', userId);
     router.push('/dashboard');
     router.refresh();
@@ -148,9 +154,9 @@ export default function PlacementExam({ userId, userName }: Props) {
         </p>
         <div className="grid grid-cols-2 gap-3 mb-4">
           {[
-            { icon: '🧠', label: 'Adaptativo',  desc: 'Sube/baja dificultad en tiempo real' },
-            { icon: '🔀', label: 'Aleatorio',    desc: 'Banco de 180+ preguntas rotativas' },
-            { icon: '📊', label: '5 niveles',   desc: 'Detecta desde A1 hasta C1' },
+            { icon: '🧠', label: 'Adaptativo', desc: 'Sube/baja dificultad en tiempo real' },
+            { icon: '🔀', label: 'Aleatorio', desc: 'Banco de 180+ preguntas rotativas' },
+            { icon: '📊', label: '5 niveles', desc: 'Detecta desde A1 hasta C1' },
             { icon: '⚡', label: '25 preguntas', desc: 'Preciso y rápido a la vez' },
           ].map(t => (
             <div key={t.label} className="p-4 rounded-2xl border text-left"
@@ -207,7 +213,7 @@ export default function PlacementExam({ userId, userName }: Props) {
             <p className="text-xs font-bold uppercase tracking-wider mb-3 text-left" style={{ color: 'var(--text3)' }}>
               Resultados por nivel
             </p>
-            {(['A1','A2','B1','B2','C1'] as ExamLevel[]).map(lvl => {
+            {(['A1', 'A2', 'B1', 'B2', 'C1'] as ExamLevel[]).map(lvl => {
               const s = scores[lvl];
               if (s.total === 0) return null;
               const p = Math.round((s.correct / s.total) * 100);
@@ -227,8 +233,8 @@ export default function PlacementExam({ userId, userName }: Props) {
           <div className="grid grid-cols-3 gap-3 mb-6">
             {[
               { v: `${totalCorrect}/${totalAnswered}`, label: 'Correctas', color: 'var(--green)' },
-              { v: `${pct}%`,                          label: 'Precisión',  color: info.color },
-              { v: result,                             label: 'Nivel CEFR', color: 'var(--text)' },
+              { v: `${pct}%`, label: 'Precisión', color: info.color },
+              { v: result, label: 'Nivel CEFR', color: 'var(--text)' },
             ].map(s => (
               <div key={s.label} className="rounded-2xl p-4 border"
                 style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
@@ -239,21 +245,21 @@ export default function PlacementExam({ userId, userName }: Props) {
           </div>
           {saving
             ? <div className="flex items-center justify-center gap-2 py-4" style={{ color: 'var(--text3)' }}>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-sm">Guardando tu nivel...</span>
-              </div>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span className="text-sm">Guardando tu nivel...</span>
+            </div>
             : <div className="flex flex-col gap-3">
-                <button onClick={() => { router.push('/dashboard'); router.refresh(); }}
-                  className="w-full py-4 text-white font-black rounded-2xl transition-all btn-glow text-lg"
-                  style={{ background: 'var(--green-dark)' }}>
-                  Ir a estudiar {result} →
-                </button>
-                <button onClick={startExam}
-                  className="w-full py-3 rounded-2xl font-semibold text-sm transition-all border"
-                  style={{ borderColor: 'var(--border)', color: 'var(--text3)' }}>
-                  🔄 Repetir examen
-                </button>
-              </div>
+              <button onClick={() => { router.push('/dashboard'); router.refresh(); }}
+                className="w-full py-4 text-white font-black rounded-2xl transition-all btn-glow text-lg"
+                style={{ background: 'var(--green-dark)' }}>
+                Ir a estudiar {result} →
+              </button>
+              <button onClick={startExam}
+                className="w-full py-3 rounded-2xl font-semibold text-sm transition-all border"
+                style={{ borderColor: 'var(--border)', color: 'var(--text3)' }}>
+                🔄 Repetir examen
+              </button>
+            </div>
           }
         </div>
       </div>
@@ -328,21 +334,21 @@ export default function PlacementExam({ userId, userName }: Props) {
         </div>
         {!confirmed
           ? <button onClick={confirmAnswer} disabled={selected === null}
-              className="w-full py-4 text-white font-black rounded-xl transition-all btn-glow disabled:opacity-40 disabled:shadow-none"
-              style={{ background: 'var(--green-dark)' }}>
-              Confirmar respuesta
-            </button>
+            className="w-full py-4 text-white font-black rounded-xl transition-all btn-glow disabled:opacity-40 disabled:shadow-none"
+            style={{ background: 'var(--green-dark)' }}>
+            Confirmar respuesta
+          </button>
           : <button onClick={next}
-              className="w-full py-4 text-white font-black rounded-xl transition-all btn-glow flex items-center justify-center gap-2"
-              style={{ background: 'var(--green-dark)' }}>
-              {questionNum >= TOTAL_QUESTIONS ? 'Ver mi resultado →' : 'Siguiente'}
-              <ChevronRight className="w-4 h-4" />
-            </button>
+            className="w-full py-4 text-white font-black rounded-xl transition-all btn-glow flex items-center justify-center gap-2"
+            style={{ background: 'var(--green-dark)' }}>
+            {questionNum >= TOTAL_QUESTIONS ? 'Ver mi resultado →' : 'Siguiente'}
+            <ChevronRight className="w-4 h-4" />
+          </button>
         }
         <p className="text-center text-xs mt-4" style={{ color: 'var(--text3)' }}>
           {confirmed && selected === question.correct ? '✅ ¡Correcto! Subiendo dificultad...' :
-           confirmed ? '❌ Incorrecto. La dificultad se ajusta automáticamente.' :
-           '🧠 El examen se adapta según tus respuestas'}
+            confirmed ? '❌ Incorrecto. La dificultad se ajusta automáticamente.' :
+              '🧠 El examen se adapta según tus respuestas'}
         </p>
       </div>
     </div>
