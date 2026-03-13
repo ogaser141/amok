@@ -47,7 +47,7 @@ export default function LearnClient({ userId, profile, existingReviews, initialL
   const [errorCards, setErrorCards] = useState<Flashcard[]>([]);
   const [errorIdx, setErrorIdx] = useState(0);
   const [errorFlipped, setErrorFlipped] = useState(false);
-  const [newAchievements, setNewAchievements] = useState<Array<{icon:string;title:string;desc:string}>>([]);
+  const [newAchievements, setNewAchievements] = useState<Array<{id:string;icon:string;title:string;desc:string}>>([]);
 
   const card = cards[idx];
   const progress = cards.length > 0 ? (idx / cards.length) * 100 : 0;
