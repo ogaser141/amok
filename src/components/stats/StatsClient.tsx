@@ -91,7 +91,7 @@ export default function StatsClient({ profile, sessions, achievements }: Props) 
               <Tooltip
                 contentStyle={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 12 }}
                 labelStyle={{ color: 'var(--text2)' }}
-                formatter={(v: number) => [`${v} XP`, 'XP']} />
+                formatter={(v) => [`${v} XP`, 'XP']} />
               <Bar dataKey="xp" fill="var(--green)" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -107,7 +107,7 @@ export default function StatsClient({ profile, sessions, achievements }: Props) 
               <YAxis tick={{ fontSize: 10, fill: 'var(--text3)' }} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 12 }}
-                formatter={(v: number) => [`${v} tarjetas`, 'Tarjetas']} />
+                formatter={(v) => [`${v} tarjetas`, 'Tarjetas']} />
               <Line type="monotone" dataKey="cards" stroke="var(--green-bright)" strokeWidth={2}
                 dot={false} activeDot={{ r: 4, fill: 'var(--green)' }} />
             </LineChart>
